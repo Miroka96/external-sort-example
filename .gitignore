@@ -1,3 +1,6 @@
 external-sort-exercise.iml
 /.idea/
 /.gradle/
+*.zip
+/data/sorted*
+build/

@@ -57,11 +57,11 @@ public final class RemoteFileSorter {
         remoteFileSorters.forEach(sorter -> sorter.sortRemoteFile(inputFileName, outputFileName, chunkSizeInBytes));
         remoteFileSorters.forEach(RemoteFileSorterClient::waitForCommandToComplete);
 
-        remoteFileSorters.forEach(sorter -> sorter.chunkRemoteFile(outputFileName, chunkSizeInBytes/remoteFileSorters.size()));
+        remoteFileSorters.forEach(sorter -> sorter.chunkRemoteFile(outputFileName, chunkSizeInBytes));
         remoteFileSorters.forEach(RemoteFileSorterClient::waitForCommandToComplete);
 
         var fileInputStreams = remoteFileSorters
-                .parallelStream()
+                .stream()
                 .map(sorter -> new Pair<>(sorter, sorter.getNextFileChunk()))
                 .filter(pair -> pair.last.isPresent())
                 .map(pair -> new Pair<>(pair.first, pair.last.get()))
